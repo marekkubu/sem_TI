@@ -1,9 +1,4 @@
-
 import javax.swing.*;
-import java.awt.*;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Observable;
 
 /**
@@ -15,19 +10,26 @@ public class UserInterface extends Observable {
     public static Background background;
     private static Background open_doors;
     public static boolean exitPressed =false;
+    //static JRadioButton radioButtonError;
+    static JRadioButton radioButtonDoors;
+    static JRadioButton radioButtonWeight;
 
     public void initFrame() {
         frame = new JFrame("Lift");
         background=new Background(Images.background,Images.open_doors, Images.close_doors);
-        //open_doors=new Background(Images.open_doors);
         frame.setResizable(false);
 
 
-        JButton button0=new JButton(" 0 ");
-        JButton button1=new JButton(" 1 ");
-        JButton button2=new JButton(" 2 ");
-        JButton button3=new JButton(" 3 ");
-        JButton buttonExit=new JButton(" exit ");
+        JButton button0=new JButton(" Floor 0 ");
+        JButton button1=new JButton(" Floor 1 ");
+        JButton button2=new JButton(" Floor 2 ");
+        JButton button3=new JButton(" Floor 3 ");
+
+        radioButtonWeight = new JRadioButton("Sensor weight" );
+        radioButtonDoors = new JRadioButton("Sensor doors" );
+        //radioButtonError = new JRadioButton("Sensor error" );
+
+
 
         button0.addActionListener(e -> {
             Main.lift.stack.push(0);
@@ -41,19 +43,20 @@ public class UserInterface extends Observable {
         button3.addActionListener(e -> {
             Main.lift.stack.push(3);
         });
-        buttonExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                exitPressed = true;
 
-            }
-        });
-       // background.setLayout(null);
+        /*radioButtonError.addActionListener(e -> {
+            setChanged();
+            notifyObservers();
+        });*/
+
+
         background.add(button0);
         background.add(button1);
         background.add(button2);
         background.add(button3);
-        background.add(buttonExit);
+        background.add(radioButtonWeight);
+        //background.add(radioButtonError);
+        background.add(radioButtonDoors);
 
         frame.add(background);
         frame.setSize(382,495);

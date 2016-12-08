@@ -1,6 +1,7 @@
+import javax.swing.*;
 import java.util.*;
 
-public class Main {
+public class Main implements Observer {
 
     public static Lift lift = new Lift();
     public static Scanner sc = new Scanner(System.in);
@@ -12,21 +13,21 @@ public class Main {
 
     public static void main(String[] args) {
         Main watcher = new Main();
+        userInterface.addObserver(watcher);
         userInterface.initFrame();
         while (true){
             userInterface.background.repaint();
+
             while(!lift.stack.isEmpty()){
                 if (lift.stack.getLast()==lift.curent_floor) {
-                    //System.out.println("curent floor "+lift.curent_floor);
                     opendoors();
                     lift.stack.removeLast();
                     System.out.println(lift.stack);
-                    // move(lift.next_floor);
                 }
                 else {
+                    System.out.println(lift.stack);
                     int x =lift.stack.getLast();
                     lift.stack.removeLast();
-                    System.out.println("kontrola " +x);
                     move(x);
                 }
             }
@@ -60,17 +61,35 @@ public class Main {
             else {
                 lift.acitve=true;
                 System.out.println(" nextFloor: "+ nextFloor);
+
                 while (nextFloor!=lift.curent_floor){
-                    timer(timeMove);
                     if (nextFloor < lift.curent_floor) {
-                       lift.setCurent_floor(lift.curent_floor-1);
-                        userInterface.background.yPosition+=userInterface.background.nextPosition;
+                        if (!lift.stack.isEmpty()&& lift.curent_floor == lift.stack.getLast()) {
+                            lift.stack.removeLast();
+                            opendoors();
+                        }
+                        int end = userInterface.background.yPosition+userInterface.background.nextPosition;
+
+                        while(userInterface.background.yPosition!=end){
+                            timer(timeMove/userInterface.background.nextPosition);
+                            userInterface.background.yPosition=userInterface.background.yPosition+1;
+                            userInterface.background.repaint();
+                        }
+                        lift.curent_floor--;
                         userInterface.background.repaint();
                     }
                     else {
-                        lift.setCurent_floor(lift.curent_floor+1);
-                        userInterface.background.yPosition-=userInterface.background.nextPosition;
-                        userInterface.background.repaint();
+                        if (!lift.stack.isEmpty()&& lift.curent_floor == lift.stack.getLast()) {
+                            lift.stack.removeLast();
+                            opendoors();
+                        }
+                        int end = userInterface.background.yPosition-userInterface.background.nextPosition;
+                        while(userInterface.background.yPosition!=end){
+                            timer(timeMove/userInterface.background.nextPosition);
+                            userInterface.background.yPosition=userInterface.background.yPosition-1;
+                            userInterface.background.repaint();
+                        }
+                        lift.curent_floor++;
                     }
                     System.out.println("curent floor " + lift.curent_floor);
                 }
@@ -88,6 +107,21 @@ public class Main {
     }
 
     private static boolean control() {
+
+        if (userInterface.radioButtonDoors.isSelected() == true) {
+            lift.sensor_door =false;
+        }
+        else{
+            lift.sensor_door =true;
+        }
+
+        if (userInterface.radioButtonWeight.isSelected() == true) {
+            lift.sensor_weight =false;
+        }
+        else{
+            lift.sensor_weight =true;
+        }
+
         if (lift.sensor_door == true && lift.sensor_error==true && lift.sensor_weight==true ) {
             return true;
         }
@@ -97,32 +131,38 @@ public class Main {
     }
 
     private static void problem() {
-        System.out.println("problem");
+        System.out.println("Problem");
     }
 
     private static void opendoors() {
-        if (control() == true) {
-            System.out.println(" open doors");
-            timer(timeDoors);
-            lift.door_open=true;
-            userInterface.background.repaint();
-            closeDoors();
-        }
-        else{
-            problem();
-        }
+        System.out.println(" open doors");
+        timer(timeDoors);
+        lift.door_open=true;
+        userInterface.background.repaint();
+        closeDoors();
     }
+    public static void msgbox(String text, String header){
+        JOptionPane.showMessageDialog(null, text, header, JOptionPane.WARNING_MESSAGE);
 
+    }
     private static void closeDoors() {
-        if (control() == true) {
             System.out.println(" close doors ");
-            timer(timeDoors);
+            int pocet=0;
+            while (pocet<50){
+                control();
+                if (lift.sensor_door == true) {
+                    timer(timeDoors/50);
+                    pocet++;
+                }
+                else {
+                    msgbox("I can not close doors.", "Sensor doors");
+                    userInterface.radioButtonDoors.setSelected(false);
+                    pocet=0;
+                }
+            }
             lift.door_open=false;
             userInterface.background.repaint();
-        }
-        else{
-            problem();
-        }
+
     }
 
     public static void timer(long time){
@@ -133,21 +173,14 @@ public class Main {
         }
     }
 
-  /*  @Override
+    @Override
     public void update(Observable o, Object arg) {
-        if (lift.stack.isEmpty()==false && lift.stack.getLast()==lift.curent_floor) {
-            //System.out.println("curent floor "+lift.curent_floor);
-            opendoors();
-            lift.stack.removeLast();
-            System.out.println(lift.stack);
-           // move(lift.next_floor);
-        }
-        else if (lift.stack.isEmpty()==false) {
-            int x =lift.stack.getLast();
-            lift.stack.removeLast();
-            System.out.println("kontrola " +x);
-            move(x);
-        }
-        //System.out.println("Zmena: "+lift.stack+" arg: "+arg);
-    }*/
+        System.out.println("waiting...");
+        problem();
+       /* try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+    }
 }

@@ -1,7 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +24,6 @@ class Images{
         }
         return img;
     }
-
 
 }
 
@@ -60,6 +58,7 @@ public class Background extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(img,0,0,null);
+
         if (Main.lift.door_open == false) {
             this.imgDoors=imgClose;
         }
