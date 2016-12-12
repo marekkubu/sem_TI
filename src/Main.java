@@ -57,16 +57,20 @@ public class Main implements Observer {
         if (nextFloor <= 3) {
             if (nextFloor == lift.curent_floor) {
                 opendoors();
+
+
             }
             else {
                 lift.acitve=true;
                 System.out.println(" nextFloor: "+ nextFloor);
 
                 while (nextFloor!=lift.curent_floor){
+
                     if (nextFloor < lift.curent_floor) {
                         if (!lift.stack.isEmpty()&& lift.curent_floor == lift.stack.getLast()) {
                             lift.stack.removeLast();
                             opendoors();
+
                         }
                         int end = userInterface.background.yPosition+userInterface.background.nextPosition;
 
@@ -101,9 +105,25 @@ public class Main implements Observer {
         }
 
         else{
-            System.out.println(" Zadane hodnoty sou chybne");
+            System.out.println(" Zadane hodnoty jsou chybne");
         }
 
+    }
+
+    private static void enabledFloor(int curent_floor) {
+        if(curent_floor == 0){
+            userInterface.button0.setEnabled(true);
+            userInterface.buttonOut0.setEnabled(true);
+        }else if (curent_floor == 1){
+            userInterface.button1.setEnabled(true);
+            userInterface.buttonOut1.setEnabled(true);
+        }else if (curent_floor == 2){
+            userInterface.button2.setEnabled(true);
+            userInterface.buttonOut2.setEnabled(true);
+        }else {
+            userInterface.button3.setEnabled(true);
+            userInterface.buttonOut3.setEnabled(true);
+        }
     }
 
     private static boolean control() {
@@ -140,6 +160,7 @@ public class Main implements Observer {
         lift.door_open=true;
         userInterface.background.repaint();
         closeDoors();
+        enabledFloor(lift.curent_floor);
     }
     public static void msgbox(String text, String header){
         JOptionPane.showMessageDialog(null, text, header, JOptionPane.WARNING_MESSAGE);
@@ -150,18 +171,36 @@ public class Main implements Observer {
             int pocet=0;
             while (pocet<50){
                 control();
+
                 if (lift.sensor_door == true) {
                     timer(timeDoors/50);
                     pocet++;
                 }
                 else {
-                    msgbox("I can not close doors.", "Sensor doors");
+                    msgbox("I cannot close doors.", "Sensor doors");
                     userInterface.radioButtonDoors.setSelected(false);
                     pocet=0;
                 }
             }
             lift.door_open=false;
-            userInterface.background.repaint();
+            if (lift.sensor_weight == false){
+                userInterface.emptyLabel.setVisible(true);
+                userInterface.button0.setVisible(false);
+                userInterface.button1.setVisible(false);
+                userInterface.button2.setVisible(false);
+                userInterface.button3.setVisible(false);
+             }
+            else{
+                userInterface.emptyLabel.setVisible(false);
+                userInterface.radioButtonWeight.setSelected(false);
+                userInterface.button0.setVisible(true);
+                userInterface.button1.setVisible(true);
+                userInterface.button2.setVisible(true);
+                userInterface.button3.setVisible(true);
+
+           }
+
+        userInterface.background.repaint();
 
     }
 
