@@ -19,8 +19,10 @@ public class Main implements Observer {
             userInterface.background.repaint();
 
             while(!lift.stack.isEmpty()){
-                if (lift.stack.getLast()==lift.curent_floor) {
+                if (lift.stack.getLast()==lift.curent_floor ) {
                     opendoors();
+
+                    //int x = lift.stack.getLast();
                     lift.stack.removeLast();
                     System.out.println(lift.stack);
                 }
@@ -28,6 +30,7 @@ public class Main implements Observer {
                     System.out.println(lift.stack);
                     int x =lift.stack.getLast();
                     lift.stack.removeLast();
+
                     move(x);
                 }
             }
@@ -66,9 +69,13 @@ public class Main implements Observer {
 
                 while (nextFloor!=lift.curent_floor){
 
+
                     if (nextFloor < lift.curent_floor) {
                         if (!lift.stack.isEmpty()&& lift.curent_floor == lift.stack.getLast()) {
+
                             lift.stack.removeLast();
+
+
                             opendoors();
 
                         }
@@ -95,7 +102,7 @@ public class Main implements Observer {
                         }
                         lift.curent_floor++;
                     }
-                    System.out.println("curent floor " + lift.curent_floor);
+                    System.out.println("current floor " + lift.curent_floor);
                 }
                 lift.acitve=false;
                 lift.next_floor=-1;
@@ -161,6 +168,7 @@ public class Main implements Observer {
         userInterface.background.repaint();
         closeDoors();
         enabledFloor(lift.curent_floor);
+        lift.stack.remove(lift.curent_floor);
     }
     public static void msgbox(String text, String header){
         JOptionPane.showMessageDialog(null, text, header, JOptionPane.WARNING_MESSAGE);
