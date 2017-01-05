@@ -1,21 +1,33 @@
 import javax.swing.*;
 import java.util.Observable;
-
 /**
- * Created by Marek on 8. 12. 2016.
+ * Trida slouzici k vytvoreni uzivatelskeho rozhrani
+ * @author Marek Kubů, Josef Kalivoda
  */
 public class UserInterface extends Observable {
 
     private static JFrame frame;
     public static Background background;
-    private static Background open_doors;
-    public static boolean exitPressed =false;
-    //static JRadioButton radioButtonError;
+    /**
+     * Senzor, ktery hlida, zda pri zavirani dveri neni nic mezi dvermi
+     */
     static JRadioButton radioButtonDoors;
+    /**
+     * Senzor, ktery hlida, zda je nekdo uvnitr vytahu
+     */
     static JRadioButton radioButtonWeight;
+    /**
+     * Tlacitka pro ovladani vytahu
+     */
     static JButton button0,button1,button2,button3,buttonOut0,buttonOut1,buttonOut2,buttonOut3;
+    /**
+     * Zobrazuje, ze ve vytahu nikdo neni
+     */
     static JLabel emptyLabel;
 
+    /**
+     * Vytvoreni samotneho okna pro uzivatele
+     */
     public void initFrame() {
         frame = new JFrame("Lift");
         background=new Background(Images.background,Images.open_doors, Images.close_doors);
@@ -123,5 +135,25 @@ public class UserInterface extends Observable {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
+
+    /**
+     * Metoda osetruje, aby se tlacitka dala zmacknout pouze jednou, pokud byla zmacknuta a jeste nebyla vykonana
+     * @param curent_floor aktualni patro, kde se vytah nachazi
+     */
+    public static void enabledFloor(int curent_floor) {
+        if(curent_floor == 0){
+            button0.setEnabled(true);
+            buttonOut0.setEnabled(true);
+        }else if (curent_floor == 1){
+            button1.setEnabled(true);
+            buttonOut1.setEnabled(true);
+        }else if (curent_floor == 2){
+            button2.setEnabled(true);
+            buttonOut2.setEnabled(true);
+        }else {
+            button3.setEnabled(true);
+            buttonOut3.setEnabled(true);
+        }
     }
 }

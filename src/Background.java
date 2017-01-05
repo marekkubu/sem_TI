@@ -6,14 +6,19 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by Marek on 6. 12. 2016.
+ * Trida slouzici k nacitani obrazku
+ * @author Marek Kubů, Josef Kalivoda
  */
 class Images{
     public static BufferedImage background = loadImage("img/bgr.png");
     public static BufferedImage open_doors = loadImage("img/open_doors.png");
     public static BufferedImage close_doors = loadImage("img/close_doors.png");
 
-
+    /**
+     * Nacitani obrazku
+     * @param name nazev obrazku
+     * @return img
+     */
     public static BufferedImage loadImage(String name)
     {   BufferedImage img = null;
         try {
@@ -27,12 +32,15 @@ class Images{
 
 }
 
+/**
+ * Trida diky ktere vykreslujeme komponenty a nacitame obrazky
+ */
 public class Background extends JPanel {
     int yPosition = 354;
     int nextPosition = 98;
 
     /**
-     * Obrazek pozadi
+     * Obrazky pouzite pri vizualizaci
      */
     private BufferedImage img = null;
     private BufferedImage imgOpen = null;
@@ -40,7 +48,7 @@ public class Background extends JPanel {
     private BufferedImage imgClose = null;
 
     /**
-     * Vytvori pozadi se zadanym obrazkem
+     * Vytvori vizualizaci
      *
      * @param img obrazek
      */
@@ -51,7 +59,7 @@ public class Background extends JPanel {
     }
 
     /**
-     * Vykresli Obrazek
+     * Vykresli vizualizaci
      */
     @Override
     public void paintComponent(Graphics g) {
