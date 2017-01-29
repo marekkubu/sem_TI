@@ -122,7 +122,7 @@ public class Main implements Observer {
     }
 
     /**
-     * Metoda slouzici ke kontrole senzoru a nastavuje vytahu udaje
+     * Metodaa slouzici ke kontrole senzoru a nastavuje vytahu udaje
      * @return true pokud jsou vsechny senzory ok nebo false pokud tomu tak neni
      */
     private static boolean control() {
