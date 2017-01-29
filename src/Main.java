@@ -180,16 +180,13 @@ public class Main implements Observer {
         int pocet=0;
         while (pocet<50){
             control();
-
-            if (lift.sensor_door == true) {
-                timer(timeDoors/50);
-                pocet++;
+            while (lift.sensor_door == false){
+                control();
+                userInterface.doorsLabel.setVisible(true);
             }
-            else {
-                msgbox("I cannot close doors.", "Sensor doors");
-                userInterface.radioButtonDoors.setSelected(false);
-                pocet=0;
-            }
+            userInterface.doorsLabel.setVisible(false);
+            timer(timeDoors/50);
+            pocet++;
         }
         lift.door_open=false;
         if (lift.sensor_weight == false){

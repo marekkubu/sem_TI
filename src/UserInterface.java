@@ -24,7 +24,10 @@ public class UserInterface extends Observable {
      * Zobrazuje, ze ve vytahu nikdo neni
      */
     static JLabel emptyLabel;
-
+    /**
+     * Zobrazuje, ze dvere vytahu nejsou zavrit
+     */
+    static JLabel doorsLabel;
     /**
      * Vytvoreni samotneho okna pro uzivatele
      */
@@ -49,13 +52,14 @@ public class UserInterface extends Observable {
         //radioButtonError = new JRadioButton("Sensor error" );
 
         emptyLabel = new JLabel("LIFT IS EMPTY");
+        doorsLabel = new JLabel("DOORS CAN'T CLOSE");
 
         radioButtonWeight.setSelected(true);
         button0.setVisible(false);
         button1.setVisible(false);
         button2.setVisible(false);
         button3.setVisible(false);
-
+        doorsLabel.setVisible(false);
 
         button0.addActionListener(e -> {
             Main.lift.stack.push(0);
@@ -116,6 +120,7 @@ public class UserInterface extends Observable {
         background.add(buttonOut2);
         background.add(buttonOut3);
         background.add(emptyLabel);
+        background.add(doorsLabel);
         background.setLayout(null);
 
         button0.setBounds(15,10,80,25);
@@ -128,7 +133,8 @@ public class UserInterface extends Observable {
         buttonOut1.setBounds(165,295,25,25);
         buttonOut2.setBounds(165,195,25,25);
         buttonOut3.setBounds(165,100,25,25);
-        emptyLabel.setBounds(250,20,200,25);
+        emptyLabel.setBounds(240,125,200,25);
+        doorsLabel.setBounds(240,150,200,25);
 
         frame.add(background);
         frame.setSize(382,495);
