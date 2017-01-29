@@ -141,7 +141,7 @@ public class Main implements Observer {
             lift.sensor_weight =true;
         }
 
-        if (lift.sensor_door == true && lift.sensor_weight==true ) {
+       if (lift.sensor_door == true && lift.sensor_weight==true ) {
             return true;
         }
         else{
@@ -167,19 +167,37 @@ public class Main implements Observer {
      * @param text
      * @param header
      */
-    public static void msgbox(String text, String header){
+   /* public static void msgbox(String text, String header){
         JOptionPane.showMessageDialog(null, text, header, JOptionPane.WARNING_MESSAGE);
 
-    }
+    }*/
 
     /**
      * Metoda slouzici k zavirani dveri
      */
     private static void closeDoors() {
         System.out.println(" close doors ");
+
         int pocet=0;
         while (pocet<50){
             control();
+            if (lift.sensor_weight == false){
+                userInterface.emptyLabel.setVisible(true);
+                userInterface.button0.setVisible(false);
+                userInterface.button1.setVisible(false);
+                userInterface.button2.setVisible(false);
+                userInterface.button3.setVisible(false);
+            }
+            else{
+                userInterface.emptyLabel.setVisible(false);
+                userInterface.radioButtonWeight.setSelected(false);
+                userInterface.button0.setVisible(true);
+                userInterface.button1.setVisible(true);
+                userInterface.button2.setVisible(true);
+                userInterface.button3.setVisible(true);
+
+            }
+
             while (lift.sensor_door == false){
                 control();
                 userInterface.doorsLabel.setVisible(true);
@@ -189,22 +207,7 @@ public class Main implements Observer {
             pocet++;
         }
         lift.door_open=false;
-        if (lift.sensor_weight == false){
-            userInterface.emptyLabel.setVisible(true);
-            userInterface.button0.setVisible(false);
-            userInterface.button1.setVisible(false);
-            userInterface.button2.setVisible(false);
-            userInterface.button3.setVisible(false);
-        }
-        else{
-            userInterface.emptyLabel.setVisible(false);
-            userInterface.radioButtonWeight.setSelected(false);
-            userInterface.button0.setVisible(true);
-            userInterface.button1.setVisible(true);
-            userInterface.button2.setVisible(true);
-            userInterface.button3.setVisible(true);
 
-        }
 
         userInterface.background.repaint();
 
